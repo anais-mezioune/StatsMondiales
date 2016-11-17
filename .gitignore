@@ -1,1 +1,7 @@
 .~lock*
+.classpath
+.project
+.iml
+.ipr
+.iws
+.idea/
