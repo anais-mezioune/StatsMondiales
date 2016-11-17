@@ -1,5 +1,6 @@
 package controllers;
 
+import Services.PaysDonneesService;
 import play.*;
 import play.mvc.*;
 
@@ -10,7 +11,8 @@ import models.*;
 public class Application extends Controller {
 
     public static void index() {
-        render();
+        List<PaysDonnees> donnees = PaysDonneesService.chercherDonneesPays("France");
+        render(donnees);
     }
 
 }
