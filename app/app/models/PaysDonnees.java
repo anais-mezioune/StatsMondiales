@@ -4,6 +4,8 @@ import play.db.jpa.Model;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -13,14 +15,11 @@ import javax.persistence.Table;
 @Entity
 @Table(name="pays_donnees")
 public class PaysDonnees extends Model {
-    @OneToOne
-    public long id_pays;
+    @ManyToOne
+    public Pays pays;
 
-    @OneToOne
-    public long id_annee;
-
-    @Id
-    public long id;
+    @ManyToOne
+    public Annee annee;
 
     public long population;
 

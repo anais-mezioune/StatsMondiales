@@ -12,7 +12,6 @@ import javax.persistence.Table;
 @Entity
 @Table(name="annee")
 public class Annee extends Model{
-    @Id
-    public long id;
+	
     public short annee;
 }

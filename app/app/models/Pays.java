@@ -13,8 +13,6 @@ import javax.persistence.Table;
 @Entity
 @Table(name="pays")
 public class Pays extends Model {
-    @Id
-    public long id;
 
     public String nom;
 
