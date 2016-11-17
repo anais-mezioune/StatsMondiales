@@ -1,14 +1,18 @@
 package models;
 
+import play.db.jpa.Model;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
 /**
  * Created by pj on 17/11/16.
  */
 @Entity
-public class PaysDonnees {
+@Table(name="pays_donnees")
+public class PaysDonnees extends Model {
     @OneToOne
     public long id_pays;
 
@@ -18,12 +22,16 @@ public class PaysDonnees {
     @Id
     public long id;
 
-    public long densite_population;
+    public long population;
 
-    public short esperance_vie;
+    public double esperance_vie;
 
-    public long pib;
+    public double natalite;
 
-    public long nb_habitants;
+    public double mortalite;
+
+    public double mortalite_infantile;
+
+    public double croissance;
 
 }
