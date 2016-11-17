@@ -1,7 +1,9 @@
 .~lock*
-.classpath*
-.project*
-.iml*
-.ipr*
-.iws*
-.idea/
+**/.classpath*
+**/.project*
+**/.iml*
+**/.ipr*
+**/.iws*
+**/.idea/
+**/eclipse/
+**/.settings/
