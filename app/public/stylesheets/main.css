@@ -1,0 +1,79 @@
+html, body, content {
+	width : 100%;
+	height : 100%;
+	margin : 0;
+	padding : 0;
+}
+
+h1, h2, ul{
+	margin: 0;
+	padding: 0;	
+}
+
+ul{
+	list-style-type: none;
+	width: 150px;
+	float: left;
+}
+
+header, footer {
+	width : 100%;
+	height : 70px;
+	background : #990000;	
+}
+
+#titre_princ {
+	color : white;
+	width: 50%;
+	padding: 5px;
+}
+
+#content {
+	padding: 15px;
+    height: calc(100% - 70px - 29px);
+}
+
+#gauche{
+	float: left;
+	position: relative;
+	border-right: 1px solid #999;
+}
+
+#droite{
+	float: right;	
+	position: relative;
+}
+
+form{
+    height: 250px;
+    position: relative;
+}
+
+select{
+	height: 250px;	
+	float: left;
+	margin: 0 10px 0 0;
+}
+
+select option:first-child{
+	color: #999;
+}
+
+#comparer{
+	position: absolute;
+	bottom: 0px;
+	right: 5px;	
+}
+
+footer{
+	position : absolute;
+	bottom : 0;
+	color : white;
+	text-align : center;
+	height: 29px;
+}
+
+#copyright{
+	margin: 0;
+	padding: 5px 0px;
+}

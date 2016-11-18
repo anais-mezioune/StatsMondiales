@@ -12,7 +12,10 @@ public class Application extends Controller {
 
     public static void index() {
         List<PaysDonnees> donnees = PaysDonneesService.chercherDonneesPays("France");
-        render(donnees);
+        
+        List<Pays> listePays = Pays.findAll();
+        List<Annee> listeAnnees = Annee.findAll();
+        render(donnees, listePays, listeAnnees);
     }
 
 }

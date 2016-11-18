@@ -9,9 +9,19 @@
         <link rel="shortcut icon" type="image/png" href="@{'/public/images/favicon.png'}">
     </head>
     <body>
-        #{doLayout /}
+    	<header>
+    		<h1 id="titre_princ">World Stats</h1>
+    		
+    	</header>
+    	<section id="content">
+    		#{doLayout /}
+    	</section>
         
+        <footer>
+        	<p id="copyright">Copyright &copy;2016 Roxxor | All rights reserved</p>        	
+        </footer>
         <script src="@{'/public/javascripts/jquery-1.6.4.min.js'}" type="text/javascript" charset="utf-8"></script>
+        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
         #{get 'moreScripts' /}
     </body>
 </html>
