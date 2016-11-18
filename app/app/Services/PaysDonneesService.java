@@ -41,18 +41,27 @@ public class PaysDonneesService {
     }
 
 
-    public static <T> Map<String,T> chercherDonneeForListePaysForAnne(List<String> payses , short annee, String typeDonnee){
-        //
-        Map<String,T> map = new HashMap<>();
-        for(String pays : payses){
-            T datico =PaysDonneesService.chercherDonneesPaysAnnees(typeDonnee,pays,annee);
-            map.put(pays ,datico );
+    public static double[] chercherDonneeForListePaysForAnne(String[] payses , short annee, String typeDonnee) {
+        double[] array = new double[payses.length+1];
+        array[0] = (double) annee;
+        for (int i=0;i<payses.length;i++) {
+            double datico = PaysDonneesService.chercherDonneesPaysAnnees(typeDonnee, payses[i], annee);
+            array[i+1] = datico;
         }
-      return map;
-
+        return array;
     }
 
 
+    public static <T> Map<String,T> chercherDonneesOfListePaysForAnne(List<String> payses , short annee, String typeDonnee){
+        //
+        Map<String,T> map = new HashMap<>();
+        for(String pays : payses){
+            T datico = PaysDonneesService.chercherDonneesPaysAnnees(typeDonnee,pays,annee);
+            map.put(pays,datico);
+        }
+        return map;
+
+    }
 
     public static <T> T chercherDonneesPaysAnnees(String donnee,String nomPays,short annee){
         long id_pays = PaysService.chercherPaysbyName(nomPays).id;
