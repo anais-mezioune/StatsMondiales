@@ -40,30 +40,29 @@ public class PaysDonneesService {
         return donnes;
     }
 
-
     public static double[] chercherDonneeForListePaysForAnne(String[] payses , short annee, String typeDonnee) {
         double[] array = new double[payses.length+1];
         array[0] = (double) annee;
         for (int i=0;i<payses.length;i++) {
-            double datico = PaysDonneesService.chercherDonneesPaysAnnees(typeDonnee, payses[i], annee);
+            double datico = PaysDonneesService.chercherDonneePaysAnnees(typeDonnee, payses[i], annee);
             array[i+1] = datico;
         }
         return array;
     }
-
+    
 
     public static <T> Map<String,T> chercherDonneesOfListePaysForAnne(List<String> payses , short annee, String typeDonnee){
         //
         Map<String,T> map = new HashMap<>();
         for(String pays : payses){
-            T datico = PaysDonneesService.chercherDonneesPaysAnnees(typeDonnee,pays,annee);
+            T datico = PaysDonneesService.chercherDonneePaysAnnees(typeDonnee,pays,annee);
             map.put(pays,datico);
         }
         return map;
 
     }
 
-    public static <T> T chercherDonneesPaysAnnees(String donnee,String nomPays,short annee){
+    public static <T> T chercherDonneePaysAnnees(String donnee,String nomPays,short annee){
         long id_pays = PaysService.chercherPaysbyName(nomPays).id;
         long id_annee = AnneeService.recupererAnneeId(annee);
 
@@ -79,4 +78,35 @@ public class PaysDonneesService {
         }
 
     }
+    
+    public static <T> T chercherDonneesPaysAnnees(String[] donnees,String nomPays,short annee){
+        long id_pays = PaysService.chercherPaysbyName(nomPays).id;
+        long id_annee = AnneeService.recupererAnneeId(annee);
+
+        String query =  "select"; 
+        Integer i = 0;
+        
+        while(donnees.length < i){
+    		i++;
+    		query += " " + donnees[i] ;
+    		
+    		if(i == donnees.length-1) break;
+    		else{
+    			query += ",";
+    		}
+    	}
+        
+        query += "from pays_donnees where id_pays = ?1 and id_annee = ?";
+
+        try {
+            return (T)JPA.em().createNativeQuery(query)
+                    .setParameter(1, id_pays)
+                    .setParameter(2, id_annee)
+                    .getSingleResult();
+        }catch(NoResultException exception){
+            return null;
+        }
+
+    }
+    
 }

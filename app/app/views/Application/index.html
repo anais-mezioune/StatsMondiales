@@ -8,7 +8,7 @@ esperance_vie : ${esperance_vie}
 </h3>
 
 <section id="gauche">
-	<form method="post" action="#">
+	<form method="post" action="@{Application.confirmer}" id="formComparer">
 		<select id="pays" multiple>
 			<option selected disabled>Pays</option>
 			#{list items:listePays, as:'pays'}
@@ -16,7 +16,7 @@ esperance_vie : ${esperance_vie}
 			#{/list}
 		</select>
 		
-		<select id="annee" multiple>
+		<select id="annees" multiple>
 			<option selected disabled>Années</option>
 			#{list items:listeAnnees, as:'annee'}
 				<option value="${annee.annee}">${annee.annee}</option>
@@ -24,58 +24,74 @@ esperance_vie : ${esperance_vie}
 		</select>
 		
 		<ul>
-			<li><input type="checkbox" value="population" />Nombre d'habitants</li>
-			<li><input type="checkbox" value="natalite" />Natalité</li>
-			<li><input type="checkbox" value="mortalite" />Mortalité</li>
-			<li><input type="checkbox" value="mortalite_infantile" />Mortalité infantile</li>
-			<li><input type="checkbox" value="esperance_vie" />Espérance de vie</li>
-			<li><input type="checkbox" value="croissance" />Croissance</li>
+			<li><input type="checkbox" name="critereRecherche" value="population" />Nombre d'habitants</li>
+			<li><input type="checkbox" name="critereRecherche" value="natalite" />Natalité</li>
+			<li><input type="checkbox" name="critereRecherche" value="mortalite" />Mortalité</li>
+			<li><input type="checkbox" name="critereRecherche" value="mortalite_infantile" />Mortalité infantile</li>
+			<li><input type="checkbox" name="critereRecherche" value="esperance_vie" />Espérance de vie</li>
+			<li><input type="checkbox" name="critereRecherche" value="croissance" />Croissance</li>
 		</ul>
 		
 		<input type="submit" value="Comparer" id="comparer" />
 	</form>
 </section>
 <section id="droite">
+
 	<div id="chart_div"></div>
+
 </section>
 
 #{set 'moreScripts'}
 <script>
 (function($){
-	   $('#comparer').click(function () {
-		   drawBasic();
-	   });
+	
+   google.charts.load('current', {packages: ['corechart', 'line']});
+   function drawBasic(donneesJson) { 
+
+         var data = new google.visualization.DataTable();
+         data.addColumn('string', 'Date');
+         data.addColumn('number', 'Dogs');
+         data.addColumn('number', 'Cats');
+
+         $.each(donneesJson, function(index, donnee){
+	         data.addRow(donnee);
+         });
+     
+         var options = {
+           hAxis: {
+             title: 'Annees'
+           },
+           vAxis: {
+             title: 'Valeurs'
+           }
+         };
+
+         var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+
+         chart.draw(data, options);
+       }
+
+	$("#formComparer").submit(function(event) {
+		event.preventDefault();
+
+		var critereRecherche = [];
+		$.each($("input[name='critereRecherche']:checked"), function(index, value){
+			critereRecherche.push($(value).val());
+		});
+
+		$.ajax({
+			  url: "@{Application.confirmer}",
+			  type: "POST",
+			  dataType: "json",
+			  data : "pays="+$("#pays").val()+"&annees="+$("#annees").val() + "&critereRecherche="+critereRecherche
+		}).done(function( donneesJson, textStatus, jqXHR ) {
+			drawBasic(donneesJson);
+
+	  });
+		
+	});
 	   
 	   
-	   google.charts.load('current', {packages: ['corechart', 'line']});
-	   google.charts.setOnLoadCallback(drawBasic);
-
-	   function drawBasic() { alert("ok");
-
-	         var data = new google.visualization.DataTable();
-	         data.addColumn('string', 'Date');
-	         data.addColumn('number', 'Dogs');
-	         data.addColumn('number', 'Cats');
-
-	         data.addRows([
-		        #{list items: liste, as: 'data'}
-	           		[${data.annee},${data.france}, ${data.en}],
-	          	#{/list}
-	         ]);
-	     
-	         var options = {
-	           hAxis: {
-	             title: 'Annee'
-	           },
-	           vAxis: {
-	             title: 'Valeurs'
-	           }
-	         };
-
-	         var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
-
-	         chart.draw(data, options);
-	       }
 })(jQuery);
 </script>
 #{/set}
