@@ -1,9 +1,7 @@
 #{extends 'main.html' /}
 #{set title:'Home' /}
 
-#{list items:donnees, as:'ligne'}
-<h2> Population : ${ligne.population*1000}</h2>
-#{/list}
+
 <h3>
-esperance_vie : ${esperance_vie}
+esperance_vie : ${map.get("Allemagne")}
 </h3>

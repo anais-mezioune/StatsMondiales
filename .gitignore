@@ -1,7 +1,7 @@
 .~lock*
 **/.classpath*
 **/.project*
-**/.iml*
+**/app/.iml*
 **/.ipr*
 **/.iws*
 **/.idea/
