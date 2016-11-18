@@ -16,6 +16,7 @@ public class Application extends Controller {
         List<Pays> listePays = Pays.findAll();
         List<Annee> listeAnnees = Annee.findAll();
         render(donnees, listePays, listeAnnees);
+
     }
 
 }
