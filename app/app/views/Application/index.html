@@ -24,12 +24,12 @@ esperance_vie : ${esperance_vie}
 		</select>
 		
 		<ul>
-			<li><input type="checkbox" name="critereRecherche" value="population" />Nombre d'habitants</li>
-			<li><input type="checkbox" name="critereRecherche" value="natalite" />Natalité</li>
-			<li><input type="checkbox" name="critereRecherche" value="mortalite" />Mortalité</li>
-			<li><input type="checkbox" name="critereRecherche" value="mortalite_infantile" />Mortalité infantile</li>
-			<li><input type="checkbox" name="critereRecherche" value="esperance_vie" />Espérance de vie</li>
-			<li><input type="checkbox" name="critereRecherche" value="croissance" />Croissance</li>
+			<li><input type="checkbox" name="criteresRecherche" value="population" />Nombre d'habitants</li>
+			<li><input type="checkbox" name="criteresRecherche" value="natalite" />Natalité</li>
+			<li><input type="checkbox" name="criteresRecherche" value="mortalite" />Mortalité</li>
+			<li><input type="checkbox" name="criteresRecherche" value="mortalite_infantile" />Mortalité infantile</li>
+			<li><input type="checkbox" name="criteresRecherche" value="esperance_vie" />Espérance de vie</li>
+			<li><input type="checkbox" name="criteresRecherche" value="croissance" />Croissance</li>
 		</ul>
 		
 		<input type="submit" value="Comparer" id="comparer" />
@@ -50,8 +50,8 @@ esperance_vie : ${esperance_vie}
 
          var data = new google.visualization.DataTable();
          data.addColumn('string', 'Date');
-         data.addColumn('number', 'Dogs');
-         data.addColumn('number', 'Cats');
+         data.addColumn('number', 'France');
+         data.addColumn('number', 'Chine');
 
          $.each(donneesJson, function(index, donnee){
 	         data.addRow(donnee);
@@ -59,10 +59,10 @@ esperance_vie : ${esperance_vie}
      
          var options = {
            hAxis: {
-             title: 'Annees'
+             title: 'Années'
            },
            vAxis: {
-             title: 'Valeurs'
+             title: 'Mortalité'
            }
          };
 
@@ -74,16 +74,16 @@ esperance_vie : ${esperance_vie}
 	$("#formComparer").submit(function(event) {
 		event.preventDefault();
 
-		var critereRecherche = [];
-		$.each($("input[name='critereRecherche']:checked"), function(index, value){
-			critereRecherche.push($(value).val());
+		var criteresRecherche = [];
+		$.each($("input[name='criteresRecherche']:checked"), function(index, value){
+			criteresRecherche.push($(value).val());
 		});
 
 		$.ajax({
 			  url: "@{Application.confirmer}",
 			  type: "POST",
 			  dataType: "json",
-			  data : "pays="+$("#pays").val()+"&annees="+$("#annees").val() + "&critereRecherche="+critereRecherche
+			  data : "pays="+$("#pays").val()+"&annees="+$("#annees").val() + "&criteresRecherche="+criteresRecherche
 		}).done(function( donneesJson, textStatus, jqXHR ) {
 			drawBasic(donneesJson);
 
