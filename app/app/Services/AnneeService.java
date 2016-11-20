@@ -4,10 +4,7 @@ import javax.persistence.NoResultException;
 
 import models.Annee;
 import play.db.jpa.JPA;
-import javax.persistence.NoResultException;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by pj on 17/11/16.

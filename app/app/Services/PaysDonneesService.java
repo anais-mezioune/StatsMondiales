@@ -6,11 +6,6 @@ import play.db.jpa.JPA;
 
 import javax.persistence.NoResultException;
 
-import java.io.UnsupportedEncodingException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 /**
  * Created by pj on 17/11/16.
  */
@@ -22,9 +17,8 @@ public class PaysDonneesService {
 	 * @param pays
 	 * @param annee
 	 * @return Une donnée d'un pays pour une année
-	 * @throws UnsupportedEncodingException 
 	 */
-	public static <T> T chercherDonneesPaysAnneeByCritere(String critere, String pays, String annee) throws UnsupportedEncodingException {
+	public static <T> T chercherDonneesPaysAnneeByCritere(String critere, String pays, String annee){
 		long id_annee = AnneeService.recupererAnneeId(annee);
 		long id_pays = PaysService.chercherPaysbyName(pays).id;
 		String requete = "select " + critere + " from pays_donnees where id_annee = ?1 and id_pays = ?2";

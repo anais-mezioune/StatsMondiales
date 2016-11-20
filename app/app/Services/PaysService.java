@@ -2,8 +2,6 @@ package Services;
 
 import models.Pays;
 
-import java.util.List;
-
 /**
  * Created by pj on 17/11/16.
  */

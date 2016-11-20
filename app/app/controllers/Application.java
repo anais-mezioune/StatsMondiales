@@ -5,17 +5,8 @@ import Services.PaysDonneesService;
 import play.*;
 import play.mvc.*;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import com.mysql.fabric.xmlrpc.base.Array;
-
 import java.io.UnsupportedEncodingException;
 import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import models.*;
 
