@@ -4,7 +4,16 @@ import Services.PaysDonneesService;
 import play.*;
 import play.mvc.*;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.mysql.fabric.xmlrpc.base.Array;
+
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import models.*;
 
@@ -50,51 +59,38 @@ public class Application extends Controller {
     	} else{
     		tabCriteresRecherche = PaysDonneesService.stringToArray(criteresRecherche);
     	}
-    	
-    	
-//    	for(String elem : tabPays){
-//    		System.out.println(elem);
-//    	}
-//    	
-//    	for(String elem : tabAnnees){
-//    		System.out.println(elem);
-//    	}
-//    	
-//    	for(String elem : tabCriteresRecherche){
-//    		System.out.println(elem);
-//    	}
-    	
    
-    	
-    	String data = "[";
+    	String donnees = "[";
     	for(int i = 0 ; i < tabCriteresRecherche.length ; i++){
     		String critere = tabCriteresRecherche[i];
     		for(int j = 0 ; j < tabAnnees.length ; j++){
-    			data += "[\"" + tabAnnees[j]  + "\",";
+    			donnees += "[\"" + tabAnnees[j]  + "\",";
     			
     			for(int k = 0 ; k < tabPays.length ; k++){
     				
-    				data += PaysDonneesService.chercherDonneesPaysAnneeByCritere(critere, tabPays[k], tabAnnees[j]);
+    				donnees += PaysDonneesService.chercherDonneesPaysAnneeByCritere(critere, tabPays[k], tabAnnees[j]);
     				// data += ", 17]";
     				
+    				
     				if(k == tabPays.length-1){
-    					data += ", 0";
+    					if(k == 0){
+    						donnees += ", 0";
+    					}
     					break;
-    				}
-	        		else{
-	        			data += ",";
+    				}else{
+    					donnees += ",";
 	        		}
     				
     			}
-    			data += "]";
+    			donnees += "]";
     			if(j == tabAnnees.length-1) break;
 				else{
-        			data += ",";
+					donnees += ",";
         		}
     		}
     		if(i == tabCriteresRecherche.length-1) break;
 			else{
-    			data += ",";
+				donnees += ",";
     		}
     	}
     	
@@ -127,9 +123,29 @@ public class Application extends Controller {
 //    		}
 //    	}
     	
-    	data += "]";  
-    	System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>Data : "+ data);
-    	renderJSON(data);
+    	donnees += "]"; 
+    	ArrayList<String> tabDonnees = new ArrayList();
+    	Pattern pattern1 = Pattern.compile("(\"[0-9]{4}\",[0-9a-zA-Z.,-]+,[0-9a-zA-Z.-]+)");
+    	Matcher matcher1 = pattern1.matcher(donnees);
+    	   
+    	while(matcher1.find()){
+    		tabDonnees.add("[" + matcher1.group() + "]");
+    		
+    	}
+    	
+    	System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>tabDonneesBis : "+ tabDonnees.toString());
+    	System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>donnees : "+ donnees);
+    	
+    	String json = new Gson().toJson(tabDonnees);
+    	
+//    	JsonParser  parser = new JsonParser();
+//        JsonElement elem = parser.parse(tabDonnees);
+//        JsonArray tabs = tabDonnees.getAsJsonArray();
+//        JsonObject datas = elem.getAsJsonArray().getAsJsonObject();
+//        System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>Datas : "+ datas);
+    	
+    	renderTemplate("Application/index.html", json, tabCriteresRecherche, tabPays, tabAnnees);
+//    	renderJSON(data);
     	
 //    	 String data = "[[\"2010\", 23, 17], [\"2011\", 17, 23]]";
   

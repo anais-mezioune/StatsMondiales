@@ -1,7 +1,6 @@
 #{extends 'main.html' /}
 #{set title:'Home' /}
 
-
 <h3>
 
 esperance_vie : ${esperance_vie}
@@ -9,7 +8,7 @@ esperance_vie : ${esperance_vie}
 
 <section id="gauche">
 	<form method="post" action="@{Application.confirmer}" id="formComparer">
-		<select id="pays" multiple>
+		<select id="pays" name="pays" multiple>
 			<option selected disabled>Pays</option>
 			#{list items:listePays, as:'pays'}
 				<option value="${pays.nom}">${pays.nom}</option>
@@ -36,62 +35,70 @@ esperance_vie : ${esperance_vie}
 	</form>
 </section>
 <section id="droite">
-
 	<div id="chart_div"></div>
-
 </section>
 
 #{set 'moreScripts'}
+	
 <script>
 (function($){
+	google.charts.load('current', {packages: ['corechart', 'line']});
+
+	//google.charts.setOnLoadCallback(drawBasic);
 	
-   google.charts.load('current', {packages: ['corechart', 'line']});
-   function drawBasic(donneesJson) { 
-
-         var data = new google.visualization.DataTable();
-         data.addColumn('string', 'Date');
-         data.addColumn('number', 'France');
-         data.addColumn('number', 'Chine');
-
-         $.each(donneesJson, function(index, donnee){
-	         data.addRow(donnee);
-         });
-     
-         var options = {
-           hAxis: {
-             title: 'Années'
-           },
-           vAxis: {
-             title: 'Mortalité'
-           }
-         };
-
-         var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
-
-         chart.draw(data, options);
-       }
-
+	function drawBasic(json, critere, tabPays) {alert("et oui");
+	
+	      var data = new google.visualization.DataTable();
+	      data.addColumn('number', 'Année');
+	      
+	     $.each(tabPays, function(index, nomPays){
+	    	  data.addColumn('number', nomPays);
+	     });
+	      
+	      $.each(json, function(index, donnee){
+		         data.addRow(donnee);
+	      });
+	
+	      var options = {
+	        hAxis: {
+	          title: 'Années'
+	        },
+	        vAxis: {
+	          title: critere
+	        }
+	      };
+	      
+	      $('#chart_div').after('<div id="chart_div_">"+ critere +"</div>');
+	      var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+	
+	      chart.draw(data, options);
+	}
+	
 	$("#formComparer").submit(function(event) {
 		event.preventDefault();
-
+	
 		var criteresRecherche = [];
-		$.each($("input[name='criteresRecherche']:checked"), function(index, value){
-			criteresRecherche.push($(value).val());
+		$.each($("input[name='criteresRecherche']:checked"), function(index, critere){
+			criteresRecherche.push($(critere).val());
 		});
-
+		var tabPays = [];
+		$.each($("select[name='pays']:selected"), function(index, pays){
+			tabPays.push($(pays).val());
+		});
+		
 		$.ajax({
 			  url: "@{Application.confirmer}",
 			  type: "POST",
-			  dataType: "json",
+			  //dataType: "json", 
 			  data : "pays="+$("#pays").val()+"&annees="+$("#annees").val() + "&criteresRecherche="+criteresRecherche
-		}).done(function( donneesJson, textStatus, jqXHR ) {
-			drawBasic(donneesJson);
-
+		}).done(function( json, textStatus, jqXHR ) { 
+			$.each($(criteresRecherche), function(index, critere){alert("critere : "+critere);
+				drawBasic(json, critere, tabPays);
+			});
+				
 	  });
 		
 	});
-	   
-	   
 })(jQuery);
 </script>
 #{/set}
