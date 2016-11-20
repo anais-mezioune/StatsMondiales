@@ -1,27 +1,30 @@
 <!DOCTYPE html>
 
-<html>
-    <head>
-        <title>#{get 'title' /}</title>
-        <meta charset="utf-8">
-        <link rel="stylesheet" media="screen" href="@{'/public/stylesheets/main.css'}">
-        #{get 'moreStyles' /}
-        <link rel="shortcut icon" type="image/png" href="@{'/public/images/favicon.png'}">
-    </head>
-    <body>
-    	<header>
-    		<h1 id="titre_princ">World Stats</h1>
-    		
-    	</header>
-    	<section id="content">
-    		#{doLayout /}
-    	</section>
-        
-        <footer>
-        	<p id="copyright">Copyright &copy;2016 Roxxor | All rights reserved</p>        	
-        </footer>
-        <script src="@{'/public/javascripts/jquery-3.1.1.min.js'}" type="text/javascript" charset="utf-8"></script>
-        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-        #{get 'moreScripts' /}
-    </body>
+<html lang="fr">
+<head>
+<title>#{get 'title' /}</title>
+<meta charset="utf-8">
+<link rel="stylesheet" media="screen"
+	href="@{'/public/stylesheets/main.css'}">
+#{get 'moreStyles' /}
+<link rel="shortcut icon" type="image/png"
+	href="@{'/public/images/favicon.png'}">
+</head>
+<body>
+	<header>
+		<h1 id="titre_princ">World Stats</h1>
+
+	</header>
+	<section id="content">#{doLayout /}</section>
+
+	<footer>
+		<p id="copyright">Copyright &copy;2016 Roxxor | All rights
+			reserved</p>
+	</footer>
+	<script src="@{'/public/javascripts/jquery-3.1.1.min.js'}"
+		type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript"
+		src="https://www.gstatic.com/charts/loader.js" charset="utf-8"></script>
+	#{get 'moreScripts' /}
+</body>
 </html>

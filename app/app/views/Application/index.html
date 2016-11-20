@@ -1,13 +1,10 @@
 #{extends 'main.html' /}
 #{set title:'Home' /}
 
-<h3>
-
-esperance_vie : ${esperance_vie}
-</h3>
+<h3>Comparer les données des pays</h3>
 
 <section id="gauche">
-	<form method="post" action="@{Application.confirmer}" id="formComparer">
+	<form method="post" action="@{Application.confirmer}" id="formComparer" charset="utf-8">
 		<select id="pays" name="pays" multiple>
 			<option selected disabled>Pays</option>
 			#{list items:listePays, as:'pays'}
@@ -18,7 +15,7 @@ esperance_vie : ${esperance_vie}
 		<select id="annees" multiple>
 			<option selected disabled>Années</option>
 			#{list items:listeAnnees, as:'annee'}
-				<option value="${annee.annee}">${annee.annee}</option>
+				<option value="${annee}">${annee}</option>
 			#{/list}
 		</select>
 		
@@ -40,42 +37,49 @@ esperance_vie : ${esperance_vie}
 
 #{set 'moreScripts'}
 	
-<script>
+<script type="text/javascript" charset="utf-8">
 (function($){
 	
 	   google.charts.load('current', {packages: ['corechart', 'line']});
 
-	   
-		   function drawBasic(donneesJson, critere, pays) { 
-		
-		         var data = new google.visualization.DataTable();
-		         data.addColumn('string', 'Date');/* 
-		         data.addColumn('number', 'France');
-		         data.addColumn('number', 'Chine'); */
+	   function encode_utf8( s )
+		{
+		  return unescape( encodeURIComponent( s ) );
+		}
 
-		         $.each(pays, function(index, nomPays){
-		        	 data.addColumn('number', nomPays);
-			      });
-			      
-		         $.each(donneesJson, function(index, donnee){
-			         data.addRow(donnee);
-		         });
-		     
-		         var options = {
-		           hAxis: {
-		             title: 'Années'
-		           },
-		           vAxis: {
-		             title: critere
-		           }
-		         };
-
-				//$('#chart_div').after('<div id="chart_div_'+ critere +'></div>');
-				$('#chart_div').after('<div id="chart_div_'+critere+'"></div>');	
-		         var chart = new google.visualization.LineChart(document.getElementById('chart_div_'+critere));
+		function decode_utf8( s )
+		{
+		  return decodeURIComponent( escape( s ) );
+		}
 		
-		         chart.draw(data, options);
-		       }
+	   function drawBasic(donneesJson, critere, pays) { 
+	
+         var data = new google.visualization.DataTable();
+         data.addColumn('string', 'Date');
+
+         $.each(pays, function(index, nomPays){
+        	 data.addColumn('number', nomPays);
+	      });
+	      
+         $.each(donneesJson, function(index, donnee){
+	         data.addRow(donnee);
+         });
+     
+         var options = {
+           hAxis: {
+             title: 'Années'
+           },
+           vAxis: {
+             title: critere
+           }
+         };
+
+		//$('#chart_div').after('<div id="chart_div_'+ critere +'></div>');
+		$('#chart_div').after('<div id="chart_div_'+critere+'"></div>');	
+         var chart = new google.visualization.LineChart(document.getElementById('chart_div_'+critere));
+
+         chart.draw(data, options);
+       }
 	    
 	    
 		$("#formComparer").submit(function(event) {
@@ -103,6 +107,8 @@ esperance_vie : ${esperance_vie}
 			  	});
 			});
 		});
+
+		
 		
 		   
 		   

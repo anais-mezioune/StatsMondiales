@@ -20,11 +20,7 @@ public class AnneeService {
 	 * @return L'identifiant d'une année
 	 */
     public static Integer recupererAnneeId(String annee){
-//        Annee objAnnee = Annee.find("annee",annee).first();
-//        return objAnnee.id;
-   
-
-        String query =  "select id from annee where annee = ?1";
+	    String query =  "select id from annee where annee = ?1";
 
         try {
             return (Integer) JPA.em().createNativeQuery(query)
@@ -33,7 +29,15 @@ public class AnneeService {
         }catch(NoResultException exception){
             return (Integer) null;
         }
-
     }
-
+    
+    public static List<Annee> listAnneesOrdonnee(){
+	    String query =  "select annee from annee order by annee asc";
+	     try {
+            return (List<Annee>) JPA.em().createNativeQuery(query)
+                    .getResultList();
+        }catch(NoResultException exception){
+            return (List<Annee>) null;
+        }
+    }
 }

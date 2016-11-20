@@ -5,6 +5,8 @@ import models.PaysDonnees;
 import play.db.jpa.JPA;
 
 import javax.persistence.NoResultException;
+
+import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,6 +16,39 @@ import java.util.Map;
  */
 public class PaysDonneesService {
 
+	/**
+	 * @author Anaïs
+	 * @param critere
+	 * @param pays
+	 * @param annee
+	 * @return Une donnée d'un pays pour une année
+	 * @throws UnsupportedEncodingException 
+	 */
+	public static <T> T chercherDonneesPaysAnneeByCritere(String critere, String pays, String annee) throws UnsupportedEncodingException {
+		long id_annee = AnneeService.recupererAnneeId(annee);
+		long id_pays = PaysService.chercherPaysbyName(pays).id;
+		String requete = "select " + critere + " from pays_donnees where id_annee = ?1 and id_pays = ?2";
+		
+		try {
+            return (T)JPA.em().createNativeQuery(requete)
+                    .setParameter(1, id_annee)
+                    .setParameter(2, id_pays)
+                    .getSingleResult();
+        }catch(NoResultException exception){
+            System.out.println(exception.getMessage());
+        	return null;
+        }
+	}
+	
+	/**
+	 * @author Anaïs
+	 * @param array
+	 * @return Converti une chaine de caractères en tableau
+	 */
+	public static String[] stringToArray(String... array) {
+	   return array;
+	}
+	
 //    public static List<PaysDonnees> chercherDonneesPays(String nomPays){
 //        Pays pays = PaysService.chercherPaysbyName(nomPays);
 //        List<PaysDonnees> donnees =  PaysDonnees.find("id_pays",pays.id).fetch();
@@ -78,92 +113,4 @@ public class PaysDonneesService {
 //        }
 //
 //    }
-    
-    /**
-     * @author Anaïs
-     * @param criteres[]
-     * @param nomPays
-     * @param annee
-     * @return Les données pour 1 pays et 1 année
-     */
-//    public static <T> T chercherDonneesPaysAnnee(String[] criteres,String nomPays,String annee){
-//        long id_pays = PaysService.chercherPaysbyName(nomPays).id;
-//        long id_annee = AnneeService.recupererAnneeId(annee);
-//        String query =  "select "; 
-//        Integer i = 0;
-//        
-//        for(String critere : criteres){
-//    		query += critere;
-//    		i++;
-//    		
-//    		if(i == criteres.length) break;
-//    		else{
-//    			query += ",";
-//    		}
-//    	}
-//        query += " from pays_donnees where id_pays = ?1 and id_annee = ?2";
-//        System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" + query);
-//        try {
-//            return (T)JPA.em().createNativeQuery(query)
-//                    .setParameter(1, id_pays)
-//                    .setParameter(2, id_annee)
-//                    .getResultList();
-//                    //.getSingleResult();
-//        }catch(NoResultException exception){
-//            return null;
-//        }
-//
-//    }
-    
-    /**
-     * @author Anaïs
-     * @param donnee
-     * @param nomPays
-     * @param annee
-     * @return Un tableau de donneées pour 1 pays et plusieurs années
-     */
-//	public static String[] tableauDonneesPaysAnnees(String[] donnees,String nomPays,String[] annees){
-//        long id_annee = 0;
-//        String[] resultats = null;
-//        int i = 0;
-//        for(String annee : annees){
-//        	id_annee = AnneeService.recupererAnneeId(annee);
-//        	resultats[i] = chercherDonneesPaysAnnee(donnees, nomPays, String.valueOf(id_annee));
-//        	i++;
-//    	}
-//        return resultats;
-//    }
-	
-	/**
-	 * @author Anaïs
-	 * @param critere
-	 * @param pays
-	 * @param annee
-	 * @return Une donnée d'un pays pour une année
-	 */
-	public static <T> T chercherDonneesPaysAnneeByCritere(String critere, String pays, String annee) {
-		long id_annee = AnneeService.recupererAnneeId(annee);
-		long id_pays = PaysService.chercherPaysbyName(pays).id;
-		String requete = "select " + critere + " from pays_donnees where id_annee = ?1 and id_pays = ?2";
-		
-		try {
-            return (T)JPA.em().createNativeQuery(requete)
-                    .setParameter(1, id_annee)
-                    .setParameter(2, id_pays)
-                    .getSingleResult();
-        }catch(NoResultException exception){
-            return null;
-        }
-	}
-	
-	/**
-	 * @author Anaïs
-	 * @param array
-	 * @return
-	 */
-	public static String[] stringToArray(String... array) {
-	   return array;
-	}
-
-    
 }
