@@ -1,79 +1,85 @@
 html, body, content {
-	width : 100%;
-	height : 100%;
-	margin : 0;
-	padding : 0;
-}
-
-h1, h2, ul{
+	width: 100%;
+	height: 100%;
 	margin: 0;
-	padding: 0;	
+	padding: 0;
 }
 
-ul{
+h1, h2, ul {
+	margin: 0;
+	padding: 0;
+}
+
+ul {
 	list-style-type: none;
 	width: 150px;
 	float: left;
 }
 
 header, footer {
-	width : 100%;
-	height : 70px;
-	background : #990000;	
+	width: 100%;
+	height: 70px;
+	background: #990000;
 }
 
 #titre_princ {
-	color : white;
+	color: white;
 	width: 50%;
 	padding: 5px;
 }
 
 #content {
 	padding: 15px;
-    height: calc(100% - 70px - 29px);
+	min-height: calc(100% - 70px - 29px);
 }
 
-#gauche{
+#gauche {
 	float: left;
 	position: relative;
 	border-right: 1px solid #999;
+	width: 30%;
 }
 
-#droite{
-	float: right;	
+#droite {
+	float: right;
+	position: relative;
+	width: 68%;
+}
+
+form {
+	height: 250px;
 	position: relative;
 }
 
-form{
-    height: 250px;
-    position: relative;
-}
-
-select{
-	height: 250px;	
+select {
+	height: 250px;
 	float: left;
 	margin: 0 10px 0 0;
 }
 
-select option:first-child{
+select option:first-child {
 	color: #999;
 }
 
-#comparer{
+#comparer {
 	position: absolute;
 	bottom: 0px;
-	right: 5px;	
+	right: 5px;
 }
 
-footer{
-	position : absolute;
-	bottom : 0;
-	color : white;
-	text-align : center;
+.chart_div{
+	margin-bottom: 30px;	
+}
+
+footer {
+	position: fixed;
+	bottom: 0;
+	color: white;
+	text-align: center;
 	height: 29px;
 }
 
-#copyright{
+#copyright {
 	margin: 0;
 	padding: 5px 0px;
 }
