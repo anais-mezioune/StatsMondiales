@@ -42,64 +42,71 @@ esperance_vie : ${esperance_vie}
 	
 <script>
 (function($){
-	google.charts.load('current', {packages: ['corechart', 'line']});
+	
+	   google.charts.load('current', {packages: ['corechart', 'line']});
 
-	//google.charts.setOnLoadCallback(drawBasic);
-	
-	function drawBasic(json, critere, tabPays) {alert("et oui");
-	
-	      var data = new google.visualization.DataTable();
-	      data.addColumn('number', 'Année');
-	      
-	     $.each(tabPays, function(index, nomPays){
-	    	  data.addColumn('number', nomPays);
-	     });
-	      
-	      $.each(json, function(index, donnee){
-		         data.addRow(donnee);
-	      });
-	
-	      var options = {
-	        hAxis: {
-	          title: 'Années'
-	        },
-	        vAxis: {
-	          title: critere
-	        }
-	      };
-	      
-	      $('#chart_div').after('<div id="chart_div_">"+ critere +"</div>');
-	      var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
-	
-	      chart.draw(data, options);
-	}
-	
-	$("#formComparer").submit(function(event) {
-		event.preventDefault();
-	
-		var criteresRecherche = [];
-		$.each($("input[name='criteresRecherche']:checked"), function(index, critere){
-			criteresRecherche.push($(critere).val());
-		});
-		var tabPays = [];
-		$.each($("select[name='pays']:selected"), function(index, pays){
-			tabPays.push($(pays).val());
-		});
+	   
+		   function drawBasic(donneesJson, critere, pays) { 
 		
-		$.ajax({
-			  url: "@{Application.confirmer}",
-			  type: "POST",
-			  //dataType: "json", 
-			  data : "pays="+$("#pays").val()+"&annees="+$("#annees").val() + "&criteresRecherche="+criteresRecherche
-		}).done(function( json, textStatus, jqXHR ) { 
-			$.each($(criteresRecherche), function(index, critere){alert("critere : "+critere);
-				drawBasic(json, critere, tabPays);
+		         var data = new google.visualization.DataTable();
+		         data.addColumn('string', 'Date');/* 
+		         data.addColumn('number', 'France');
+		         data.addColumn('number', 'Chine'); */
+
+		         $.each(pays, function(index, nomPays){
+		        	 data.addColumn('number', nomPays);
+			      });
+			      
+		         $.each(donneesJson, function(index, donnee){
+			         data.addRow(donnee);
+		         });
+		     
+		         var options = {
+		           hAxis: {
+		             title: 'Années'
+		           },
+		           vAxis: {
+		             title: critere
+		           }
+		         };
+
+				//$('#chart_div').after('<div id="chart_div_'+ critere +'></div>');
+				$('#chart_div').after('<div id="chart_div_'+critere+'"></div>');	
+		         var chart = new google.visualization.LineChart(document.getElementById('chart_div_'+critere));
+		
+		         chart.draw(data, options);
+		       }
+	    
+	    
+		$("#formComparer").submit(function(event) {
+			event.preventDefault();
+
+			var criteresRecherche = [];
+			var pays = [];
+			$.each($("input[name='criteresRecherche']:checked"), function(index, value){
+				criteresRecherche.push($(value).val());
 			});
-				
-	  });
+			$.each($("select[name='pays'] option:selected"), function(index, value){
+				pays.push($(value).val());
+			});
+			$.each($(criteresRecherche), function(index, critere){
+				$.ajax({
+					  url: "@{Application.confirmer}",
+					  type: "POST",
+					  dataType: "json", 
+					  data : "pays="+$("#pays").val()+"&annees="+$("#annees").val() + "&critere="+critere
+				}).done(function( donneesJson, textStatus, jqXHR ) { 
+					//$.each($(criteresRecherche), function(index, critere){
+						drawBasic(donneesJson, critere, pays);
+					//});
+						
+			  	});
+			});
+		});
 		
-	});
-})(jQuery);
+		   
+		   
+	})(jQuery);
 </script>
 #{/set}
 

@@ -32,13 +32,13 @@ public class PaysDonneesService {
 //        return map;
 //    }
 
-    public static PaysDonnees chercherDonneesPaysbyAnnee(String nomPays,String tabAnnees){
-        long id_pays = PaysService.chercherPaysbyName(nomPays).id;
-        long id_annee = AnneeService.recupererAnneeId(tabAnnees);
-
-        PaysDonnees donnes = PaysDonnees.find("id_pays = ? and id_annee = ?",id_pays,id_annee).first();
-        return donnes;
-    }
+//    public static PaysDonnees chercherDonneesPaysbyAnnee(String nomPays,String tabAnnees){
+//        long id_pays = PaysService.chercherPaysbyName(nomPays).id;
+//        long id_annee = AnneeService.recupererAnneeId(tabAnnees);
+//
+//        PaysDonnees donnes = PaysDonnees.find("id_pays = ? and id_annee = ?",id_pays,id_annee).first();
+//        return donnes;
+//    }
 
 //    public static double[] chercherDonneeForListePaysForAnne(String[] payses , String annee, String typeDonnee) {
 //        double[] array = new double[payses.length+1];
@@ -62,22 +62,22 @@ public class PaysDonneesService {
 //
 //    }
 
-    public static <T> T chercherDonneePaysAnnees(String donnee,String nomPays,String annee){
-        long id_pays = PaysService.chercherPaysbyName(nomPays).id;
-        long id_annee = AnneeService.recupererAnneeId(annee);
-
-        String query =  "select " + donnee + " from pays_donnees where id_pays = ?1 and id_annee = ?2";
-
-        try {
-            return (T)JPA.em().createNativeQuery(query)
-                    .setParameter(1, id_pays)
-                    .setParameter(2, id_annee)
-                    .getSingleResult();
-        }catch(NoResultException exception){
-            return null;
-        }
-
-    }
+//    public static <T> T chercherDonneePaysAnnees(String donnee,String nomPays,String annee){
+//        long id_pays = PaysService.chercherPaysbyName(nomPays).id;
+//        long id_annee = AnneeService.recupererAnneeId(annee);
+//
+//        String query =  "select " + donnee + " from pays_donnees where id_pays = ?1 and id_annee = ?2";
+//
+//        try {
+//            return (T)JPA.em().createNativeQuery(query)
+//                    .setParameter(1, id_pays)
+//                    .setParameter(2, id_annee)
+//                    .getSingleResult();
+//        }catch(NoResultException exception){
+//            return null;
+//        }
+//
+//    }
     
     /**
      * @author Anaïs
@@ -86,34 +86,34 @@ public class PaysDonneesService {
      * @param annee
      * @return Les données pour 1 pays et 1 année
      */
-    public static <T> T chercherDonneesPaysAnnee(String[] criteres,String nomPays,String annee){
-        long id_pays = PaysService.chercherPaysbyName(nomPays).id;
-        long id_annee = AnneeService.recupererAnneeId(annee);
-        String query =  "select "; 
-        Integer i = 0;
-        
-        for(String critere : criteres){
-    		query += critere;
-    		i++;
-    		
-    		if(i == criteres.length) break;
-    		else{
-    			query += ",";
-    		}
-    	}
-        query += " from pays_donnees where id_pays = ?1 and id_annee = ?2";
-        System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" + query);
-        try {
-            return (T)JPA.em().createNativeQuery(query)
-                    .setParameter(1, id_pays)
-                    .setParameter(2, id_annee)
-                    .getResultList();
-                    //.getSingleResult();
-        }catch(NoResultException exception){
-            return null;
-        }
-
-    }
+//    public static <T> T chercherDonneesPaysAnnee(String[] criteres,String nomPays,String annee){
+//        long id_pays = PaysService.chercherPaysbyName(nomPays).id;
+//        long id_annee = AnneeService.recupererAnneeId(annee);
+//        String query =  "select "; 
+//        Integer i = 0;
+//        
+//        for(String critere : criteres){
+//    		query += critere;
+//    		i++;
+//    		
+//    		if(i == criteres.length) break;
+//    		else{
+//    			query += ",";
+//    		}
+//    	}
+//        query += " from pays_donnees where id_pays = ?1 and id_annee = ?2";
+//        System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" + query);
+//        try {
+//            return (T)JPA.em().createNativeQuery(query)
+//                    .setParameter(1, id_pays)
+//                    .setParameter(2, id_annee)
+//                    .getResultList();
+//                    //.getSingleResult();
+//        }catch(NoResultException exception){
+//            return null;
+//        }
+//
+//    }
     
     /**
      * @author Anaïs
@@ -122,17 +122,17 @@ public class PaysDonneesService {
      * @param annee
      * @return Un tableau de donneées pour 1 pays et plusieurs années
      */
-	public static String[] tableauDonneesPaysAnnees(String[] donnees,String nomPays,String[] annees){
-        long id_annee = 0;
-        String[] resultats = null;
-        int i = 0;
-        for(String annee : annees){
-        	id_annee = AnneeService.recupererAnneeId(annee);
-        	resultats[i] = chercherDonneesPaysAnnee(donnees, nomPays, String.valueOf(id_annee));
-        	i++;
-    	}
-        return resultats;
-    }
+//	public static String[] tableauDonneesPaysAnnees(String[] donnees,String nomPays,String[] annees){
+//        long id_annee = 0;
+//        String[] resultats = null;
+//        int i = 0;
+//        for(String annee : annees){
+//        	id_annee = AnneeService.recupererAnneeId(annee);
+//        	resultats[i] = chercherDonneesPaysAnnee(donnees, nomPays, String.valueOf(id_annee));
+//        	i++;
+//    	}
+//        return resultats;
+//    }
 	
 	/**
 	 * @author Anaïs

@@ -35,13 +35,13 @@ public class Application extends Controller {
      * @param annees
      * @param criteresRecherche
      */
-    public static void confirmer(String pays, String annees, String criteresRecherche) {
+    public static void confirmer(String pays, String annees, String critere) {
     	String[] tabPays;
     	String[] tabAnnees; 
     	String[] tabCriteresRecherche;
     	System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>pays : "+ pays);
     	System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>annees : "+ annees);
-    	System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>criteresRecherche : "+ criteresRecherche);
+//    	System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>criteresRecherche : "+ criteresRecherche);
     	if (pays.indexOf(',') != -1){
     		tabPays = pays.split(",");
     	} else{
@@ -54,33 +54,23 @@ public class Application extends Controller {
     		tabAnnees = PaysDonneesService.stringToArray(annees);
     	}
     	
-    	if (criteresRecherche.indexOf(',') != -1){
-    		tabCriteresRecherche = criteresRecherche.split(",");
-    	} else{
-    		tabCriteresRecherche = PaysDonneesService.stringToArray(criteresRecherche);
-    	}
+//    	if (criteresRecherche.indexOf(',') != -1){
+//    		tabCriteresRecherche = criteresRecherche.split(",");
+//    	} else{
+//    		tabCriteresRecherche = PaysDonneesService.stringToArray(criteresRecherche);
+//    	}
    
     	String donnees = "[";
-    	for(int i = 0 ; i < tabCriteresRecherche.length ; i++){
-    		String critere = tabCriteresRecherche[i];
-    		for(int j = 0 ; j < tabAnnees.length ; j++){
+    	for(int j = 0 ; j < tabAnnees.length ; j++){
     			donnees += "[\"" + tabAnnees[j]  + "\",";
-    			
     			for(int k = 0 ; k < tabPays.length ; k++){
-    				
-    				donnees += PaysDonneesService.chercherDonneesPaysAnneeByCritere(critere, tabPays[k], tabAnnees[j]);
-    				// data += ", 17]";
-    				
+    		    		donnees += PaysDonneesService.chercherDonneesPaysAnneeByCritere(critere, tabPays[k], tabAnnees[j]);
     				
     				if(k == tabPays.length-1){
-    					if(k == 0){
-    						donnees += ", 0";
-    					}
     					break;
     				}else{
     					donnees += ",";
 	        		}
-    				
     			}
     			donnees += "]";
     			if(j == tabAnnees.length-1) break;
@@ -88,11 +78,6 @@ public class Application extends Controller {
 					donnees += ",";
         		}
     		}
-    		if(i == tabCriteresRecherche.length-1) break;
-			else{
-				donnees += ",";
-    		}
-    	}
     	
 //    	for(int i = 0 ; i < tabAnnees.length ; i++){
 //    		data += "[\"" + tabAnnees[i]  + "\",";
@@ -124,28 +109,7 @@ public class Application extends Controller {
 //    	}
     	
     	donnees += "]"; 
-    	ArrayList<String> tabDonnees = new ArrayList();
-    	Pattern pattern1 = Pattern.compile("(\"[0-9]{4}\",[0-9a-zA-Z.,-]+,[0-9a-zA-Z.-]+)");
-    	Matcher matcher1 = pattern1.matcher(donnees);
-    	   
-    	while(matcher1.find()){
-    		tabDonnees.add("[" + matcher1.group() + "]");
-    		
-    	}
-    	
-    	System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>tabDonneesBis : "+ tabDonnees.toString());
-    	System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>donnees : "+ donnees);
-    	
-    	String json = new Gson().toJson(tabDonnees);
-    	
-//    	JsonParser  parser = new JsonParser();
-//        JsonElement elem = parser.parse(tabDonnees);
-//        JsonArray tabs = tabDonnees.getAsJsonArray();
-//        JsonObject datas = elem.getAsJsonArray().getAsJsonObject();
-//        System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>Datas : "+ datas);
-    	
-    	renderTemplate("Application/index.html", json, tabCriteresRecherche, tabPays, tabAnnees);
-//    	renderJSON(data);
+    	renderJSON(donnees);
     	
 //    	 String data = "[[\"2010\", 23, 17], [\"2011\", 17, 23]]";
   
