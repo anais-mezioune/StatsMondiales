@@ -74,11 +74,14 @@
            }
          };
 
-		//$('#chart_div').after('<div id="chart_div_'+ critere +'></div>');
-		$('#chart_div').after('<div id="chart_div_'+critere+'" class="chart_div"></div>');	
-         var chart = new google.visualization.LineChart(document.getElementById('chart_div_'+critere));
-
-         chart.draw(data, options);
+ 		var chart_div = document.getElementById('chart_div_'+critere);
+ 		// var chart_div = $('#chart_div_'+critere);
+		if(!chart_div){
+			$('#droite').prepend('<div id="chart_div_'+critere+'" class="chart_div"></div>');
+ 	 	}
+			
+        var chart = new google.visualization.LineChart(document.getElementById('chart_div_'+critere));
+		chart.draw(data, options);
        }
 	    
 	    
