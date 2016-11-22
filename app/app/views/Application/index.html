@@ -74,9 +74,8 @@
            }
          };
 
- 		var chart_div = document.getElementById('chart_div_'+critere);
- 		// var chart_div = $('#chart_div_'+critere);
-		if(!chart_div){
+ 		var chart_div = $('#chart_div_'+critere);
+		if(!chart_div[0]){
 			$('#droite').prepend('<div id="chart_div_'+critere+'" class="chart_div"></div>');
  	 	}
 			
@@ -103,19 +102,11 @@
 					  dataType: "json", 
 					  data : "pays="+$("#pays").val()+"&annees="+$("#annees").val() + "&critere="+critere
 				}).done(function( donneesJson, textStatus, jqXHR ) { 
-					//$.each($(criteresRecherche), function(index, critere){
-						drawBasic(donneesJson, critere, pays);
-					//});
-						
+					drawBasic(donneesJson, critere, pays);	
 			  	});
 			});
 		});
-
-		
-		
-		   
-		   
-	})(jQuery);
+})(jQuery);
 </script>
 #{/set}
 
