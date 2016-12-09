@@ -42,6 +42,7 @@ public class Application extends Controller {
 	    	} else{
 	    		tabAnnees = PaysDonneesService.stringToArray(annees);
 	    	}
+	    	System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>pays : "+ tabPays[0]);
 
 	    	ArrayList<ArrayList> donnees = new ArrayList();
 	    	for(int j = 0 ; j < tabAnnees.length ; j++){

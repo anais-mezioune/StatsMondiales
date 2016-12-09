@@ -4,15 +4,15 @@
 <h3>Comparer les données des pays</h3>
 
 <section id="gauche">
-	<form method="post" action="@{Application.confirmer}" id="formComparer" charset="utf-8">
+	<form method="post" action="@{Application.confirmer}" id="formComparer">
 		<select id="pays" name="pays" multiple>
 			<option selected disabled>Pays</option>
 			#{list items:listePays, as:'pays'}
-				<option value="${pays.nom}">${pays.nom}</option>
+				<option value="${pays.nom.raw()}">${pays.nom.raw()}</option>
 			#{/list}
 		</select>
 		
-		<select id="annees" multiple>
+		<select id="annees" name="annees" multiple>
 			<option selected disabled>Années</option>
 			#{list items:listeAnnees, as:'annee'}
 				<option value="${annee}">${annee}</option>
@@ -42,49 +42,39 @@
 	
 	   google.charts.load('current', {packages: ['corechart', 'line']});
 
-	   function encode_utf8( s )
-		{
-		  return unescape( encodeURIComponent( s ) );
-		}
+	   function drawBasic(donneesJson, critere, pays) {
 
-		function decode_utf8( s )
-		{
-		  return decodeURIComponent( escape( s ) );
-		}
-		
-	   function drawBasic(donneesJson, critere, pays) { 
-	
-         var data = new google.visualization.DataTable();
-         data.addColumn('string', 'Date');
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'Date');
 
-         $.each(pays, function(index, nomPays){
-        	 data.addColumn('number', nomPays);
+        $.each(pays, function(index, nomPays){
+       	 data.addColumn('number', nomPays);
 	      });
-	      
-         $.each(donneesJson, function(index, donnee){
-	         data.addRow(donnee);
-         });
-     
-         var options = {
-           hAxis: {
-             title: 'Années'
-           },
-           vAxis: {
-             title: critere
-           }
-         };
 
- 		var chart_div = $('#chart_div_'+critere);
+        $.each(donneesJson, function(index, donnee){
+	         data.addRow(donnee);
+        });
+
+        var options = {
+          hAxis: {
+            title: 'Années'
+          },
+          vAxis: {
+            title: critere
+          }
+        };
+
+		var chart_div = $('#chart_div_'+critere);
 		if(!chart_div[0]){
 			$('#droite').prepend('<div id="chart_div_'+critere+'" class="chart_div"></div>');
- 	 	}
-			
-        var chart = new google.visualization.LineChart(document.getElementById('chart_div_'+critere));
+	 	}
+
+       var chart = new google.visualization.LineChart(document.getElementById('chart_div_'+critere));
 		chart.draw(data, options);
-       }
+      }
 	    
 	    
-		$("#formComparer").submit(function(event) {
+		$("#formComparer").on("submit", function(event) {
 			event.preventDefault();
 
 			var criteresRecherche = [];
@@ -100,6 +90,7 @@
 					  url: "@{Application.confirmer}",
 					  type: "POST",
 					  dataType: "json", 
+					  // contentType: "charset=utf-8",
 					  data : "pays="+$("#pays").val()+"&annees="+$("#annees").val() + "&critere="+critere
 				}).done(function( donneesJson, textStatus, jqXHR ) { 
 					drawBasic(donneesJson, critere, pays);	
